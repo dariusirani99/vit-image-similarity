@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 
 
 def compute_similarity(vector_1: torch.Tensor, vector_2: torch.Tensor) -> float:
