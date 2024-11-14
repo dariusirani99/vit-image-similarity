@@ -126,8 +126,8 @@ def plot_confusion_matrix(
 
 
 def prepare_datasets(transform: torchvision.transforms, batch_size: int):
-    trainset = CIFAR100(root='./training/data', train=True, download=False, transform=transform)
-    testset = CIFAR100(root='./training/data', train=False, download=False, transform=transform)
+    trainset = CIFAR100(root='./training/data', train=True, download=True, transform=transform)
+    testset = CIFAR100(root='./training/data', train=False, download=True, transform=transform)
     train_loader = DataLoader(trainset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(testset, batch_size=batch_size)
     return train_loader, test_loader
@@ -190,7 +190,12 @@ def train_model():
     # getting datasets and dataloaders
     transform_composed = transforms.Compose(
         [
+            transforms.Resize((224, 224)),
             transforms.ToTensor(),
+            transforms.Normalize(
+                mean=config["preprocessing"]["mean"],
+                std=config["preprocessing"]["std"],
+            ),
         ]
     )
 

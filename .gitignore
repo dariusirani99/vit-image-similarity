@@ -149,6 +149,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# data
+vit-similarity-model/training/data/
+
 # pytype static type analyzer
 .pytype/
 
