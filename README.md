@@ -27,13 +27,15 @@ To generate the mar file, follow these steps:
 2. **Download the required dependencies to prevent version mismatches**
    - Use the following command to generate the mar file in a CMD window:
      ```
-     python download_dependencies.py
+     cd vit-similarity-model
+     python download_dependencies.py download
      ```
 
 3. **Run the manage.py command**
 
    - Use the following command to generate the mar file in a CMD window:
      ```
+     cd vit-similarity-model
      python manage.py build
      ```
 
