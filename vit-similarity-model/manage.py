@@ -87,7 +87,7 @@ def create_mar_archive() -> None:
         "srcs/handler.py",
         "--extra-files",
         "serve/dependencies/,"
-        "config/config.yaml,"
+        "config/config.yml,"
         "srcs/model_architecture.py",
         "--force",
     ]
