@@ -1,10 +1,11 @@
-from torchvision.datasets import CIFAR100
+from sklearn.model_selection import train_test_split
 import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
+
 from srcs.model_architecture import PreTrainedViT
 import os
 import yaml
 import torch
-from torch.utils.data import DataLoader
 from training.train_step import train_step
 from training.test_step import test_step
 import torchvision
@@ -14,19 +15,10 @@ from matplotlib import colormaps
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from pathlib import Path
+from torchvision.datasets import ImageFolder
 
 # Labels Variable
-labels = ['apple', 'aquarium_fish', 'baby', 'bear', 'beaver', 'bed', 'bee', 'beetle', 'bicycle', 'bottle',
-          'bowl', 'boy', 'bridge', 'bus', 'butterfly', 'camel', 'can', 'castle', 'caterpillar', 'cattle',
-          'chair', 'chimpanzee', 'clock', 'cloud', 'cockroach', 'couch', 'cra', 'crocodile', 'cup',
-          'dinosaur', 'dolphin', 'elephant', 'flatfish', 'forest', 'fox', 'girl', 'hamster', 'house',
-          'kangaroo', 'keyboard', 'lamp', 'lawn_mower', 'leopard', 'lion', 'lizard', 'lobster', 'man',
-          'maple_tree', 'motorcycle', 'mountain', 'mouse', 'mushroom', 'oak_tree', 'orange', 'orchid',
-          'otter', 'palm_tree', 'pear', 'pickup_truck', 'pine_tree', 'plain', 'plate', 'poppy', 'porcupine',
-          'possum', 'rabbit', 'raccoon', 'ray', 'road', 'rocket', 'rose', 'sea', 'seal', 'shark', 'shrew',
-          'skunk', 'skyscraper', 'snail', 'snake', 'spider', 'squirrel', 'streetcar', 'sunflower',
-          'sweet_pepper', 'table', 'tank', 'telephone', 'television', 'tiger', 'tractor', 'train', 'trout',
-          'tulip', 'turtle', 'wardrobe', 'whale', 'willow_tree', 'wolf', 'woman', 'worm']
+labels = ['bolt', 'locatingpin', 'nut', 'washer']
 
 
 def plot_loss_curves(
@@ -125,10 +117,12 @@ def plot_confusion_matrix(
 
 
 def prepare_datasets(transform: torchvision.transforms, batch_size: int):
-    trainset = CIFAR100(root='./training/data', train=True, download=True, transform=transform)
-    testset = CIFAR100(root='./training/data', train=False, download=True, transform=transform)
-    train_loader = DataLoader(trainset, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(testset, batch_size=batch_size)
+    # Load the Images of mechanical parts dataset
+    image_folder = "training/data/"
+    data = ImageFolder(root=image_folder, transform=transform)
+    train_data, test_data = train_test_split(data, train_size=.75)
+    train_loader = DataLoader(train_data, shuffle=True)
+    test_loader = DataLoader(test_data, shuffle=False)
     return train_loader, test_loader
 
 
@@ -179,15 +173,13 @@ def train_model():
     # getting datasets and dataloaders
     transform_composed = transforms.Compose(
         [
+            transforms.Resize(224),
             transforms.ToTensor(),
-            transforms.Normalize(
-                mean=config["preprocessing"]["mean"],
-                std=config["preprocessing"]["std"],
-            ),
         ]
     )
 
-    train_loader, test_loader = prepare_datasets(transform=transform_composed, batch_size=batch_size)
+    train_loader, test_loader = prepare_datasets(transform=transform_composed, batch_size=batch_size,
+                                                 sample_percent=.25)
 
     # Setting seeds for reproducibility
     set_seeds(seeds)
@@ -285,20 +277,20 @@ def train_model():
                 plot_confusion_matrix(
                     y_pred=pred_labels,
                     y_true=true_labels,
-                    logging_folder=r"model_logging",
+                    logging_folder=r"vit-similarity-model/model_logging",
                     classes=labels,
                 )
 
             if plot_loss_curves:
                 print("[INFO] Plotting loss curves and saving to logging path...")
                 plot_loss_curves(
-                    results, logging_folder=r"model_logging"
+                    results, logging_folder=r"vit-similarity-model/model_logging"
                 )
 
     # Saving Model .pth weights file
     model = model.to(torch.device('cpu'))
     print("[INFO] Saving model pt file to weights path...")
-    torch.save(model, f"model-file/{model_name}.pth")
+    torch.save(model, f"vit-similarity-model/model-file/{model_name}.pth")
 
 if __name__ == "__main__":
     train_model()

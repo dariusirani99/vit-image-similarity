@@ -48,10 +48,6 @@ class CustomHandler(BaseHandler):
             [
                 transforms.Resize((224, 224)),
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=self.config["preprocessing"]["mean"],
-                    std=self.config["preprocessing"]["std"],
-                ),
             ]
         )
         self.use_cuda = self.config["use_cuda"]
