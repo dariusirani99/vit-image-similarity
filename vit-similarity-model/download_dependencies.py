@@ -59,7 +59,7 @@ def download_dependencies(requirements) -> None:
                 "serve/dependencies",
                 req,
             ]
-            logger.info(f"Downloading: {req}")
+            print("[INFO] Downloading dependencies...")
             subprocess.run(download_command, check=True)
 
 
