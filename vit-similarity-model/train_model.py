@@ -136,7 +136,7 @@ def prepare_datasets(transform: torchvision.transforms, batch_size: int):
 def load_config(config_name: str):
     """Loads the config file."""
     current_file_dir = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.join(current_file_dir, "..", "config")
+    config_path = os.path.join(current_file_dir, "config")
     config_file_path = os.path.join(config_path, f"{config_name}")
     with open(config_file_path) as file:
         return yaml.safe_load(file)
