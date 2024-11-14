@@ -5,3 +5,4 @@ torch-model-archiver==0.9.0
 torchvision==0.16.1
 pillow==10.4.0
 pyyaml==6.0.1
+pandas==2.2.2

@@ -1,7 +1,6 @@
 import torch
 from torch import nn
 import torchvision
-from torchvision.models import ViT_B_32_Weights
 import yaml
 
 
@@ -203,7 +202,6 @@ class CustomViTModel(nn.Module):
 
 class PreTrainedViT(nn.Module):
     def __init__(self,
-                 out_features: int
                  ):
         super().__init__()
 
@@ -219,18 +217,14 @@ class PreTrainedViT(nn.Module):
             print("ATTENTION: Cuda not available. The device being used is now 'cpu'.")
             self.device = torch.device("cpu")
 
-        self.model_base = torchvision.models.vit_b_32(weights=ViT_B_32_Weights.IMAGENET1K_V1)
-
-        self.model_base.heads = nn.Sequential(
-            nn.Linear(in_features=768, out_features=out_features),
-        )
+        self.model_base = torchvision.models.vit_b_32(weights=torchvision.models.ViT_B_32_Weights.DEFAULT)
 
         self.model_base.to(self.device)
 
     def forward(self, x):
         # Forward pass through the base model (excluding the classification head)
-        features = self.model_base(x)
-        return features
+        x = self.model_base(x)
+        return x
 
     @staticmethod
     def load_config(config_file):

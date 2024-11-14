@@ -42,6 +42,28 @@ def get_version() -> str:
         return version
 
 
+def get_args_parser(add_help=True):
+    """Gets parser command line arguments."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="xLenz Facility Extractor Model Archiving", add_help=add_help
+    )
+
+    parser.add_argument(
+        "-imp",
+        "--input-model-path",
+        required=True,
+        type=str,
+        help="path to model checkpoint",
+    )
+    parser.add_argument(
+        "-od", "--output-dir", required=True, type=str, help="path to saved model"
+    )
+
+    return parser
+
+
 def create_mar_archive() -> None:
     """Created the mar archive and the mar_folder storage (if not exists)."""
     model_version = get_version()
@@ -55,15 +77,18 @@ def create_mar_archive() -> None:
         "vitsimilaritymodel",
         "--version",
         model_version,
+        "--serialized-file",
+        "model-file/vitsimilaritymodel.pt",
         "--export-path",
         "output",
+        "--requirements-file",
+        "serve/requirements.txt",
         "--handler",
         "srcs/handler.py",
-        "--model-file",
-        "srcs/model_architecture.py",
         "--extra-files",
-        "config/config.yml",
-        "-f",
+        "serve/dependencies/,"
+        "config/config.yaml,"
+        "--force",
     ]
 
     subprocess.run(archiver_command, check=True)
@@ -73,11 +98,7 @@ def create_mar_archive() -> None:
 
 
 def main():
-    """
-    Application entry point.
-
-    :return:
-    """
+    """Application entry point."""
     parser = argparse.ArgumentParser()
 
     command_parsers = parser.add_subparsers(
@@ -95,3 +116,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
