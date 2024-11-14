@@ -308,6 +308,7 @@ def train_model():
                 )
 
     # Saving Model .pth weights file
+    model = model.to(torch.device('cpu'))
     print("[INFO] Saving model pt file to weights path...")
     torch.save(model, f"model-file/{model_name}.pth")
 
