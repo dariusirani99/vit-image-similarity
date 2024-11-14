@@ -306,4 +306,6 @@ def train_model():
     print("[INFO] Saving model pt file to weights path...")
     compiled_model = torch.jit.script(model)
     torch.jit.save(compiled_model, f"model-file/{model_name}.pt")
-    
+
+if __name__ == "__main__":
+    train_model()
