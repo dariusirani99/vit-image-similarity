@@ -1,7 +1,6 @@
 from sklearn.model_selection import train_test_split
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-
 from srcs.model_architecture import PreTrainedViT
 import os
 import yaml
@@ -16,6 +15,7 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 from pathlib import Path
 from torchvision.datasets import ImageFolder
+from torch import nn
 
 # Labels Variable
 labels = ['bolt', 'locatingpin', 'nut', 'washer']
@@ -178,8 +178,7 @@ def train_model():
         ]
     )
 
-    train_loader, test_loader = prepare_datasets(transform=transform_composed, batch_size=batch_size,
-                                                 sample_percent=.25)
+    train_loader, test_loader = prepare_datasets(transform=transform_composed, batch_size=batch_size)
 
     # Setting seeds for reproducibility
     set_seeds(seeds)
@@ -191,11 +190,14 @@ def train_model():
 
     # loading model and making the parameters trainable
     model = PreTrainedViT(train_config=config)
-    for parameter in model.parameters():
+    model.model_base.heads = nn.Sequential(
+        nn.Linear(in_features=768, out_features=4),
+    )
+    for parameter in model.model_base.parameters():
         parameter.requires_grad = True
 
     # defining optimizer and loss
-    optimizer = torch.optim.Adam(params=model.parameters(),
+    optimizer = torch.optim.Adam(params=model.model_base.parameters(),
                                  lr=learning_rate)
     loss_fn = torch.nn.CrossEntropyLoss()
 
