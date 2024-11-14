@@ -86,11 +86,8 @@ class CustomHandler(BaseHandler):
         Loading in the checkpoint_path weights file.
         """
         model = PreTrainedViT()
-        model.load_state_dict(state_dict=self.config["model"]["model_path"])
-        model.model_base.heads = nn.Sequential(
-            nn.Linear(in_features=768, out_features=512),
-        )
-        print(f"MODEL SUMMARY:\n{torchinfo.summary(model=self.model)}")
+        model.model_base.load_state_dict(state_dict=self.config["model"]["model_path"])
+        print(f"MODEL SUMMARY:\n{torchinfo.summary(model=self.model.model_base)}")
         return model
 
     def preprocess_one_image(self, req):

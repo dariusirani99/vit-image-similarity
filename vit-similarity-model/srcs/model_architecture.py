@@ -218,8 +218,8 @@ class PreTrainedViT(nn.Module):
             print("ATTENTION: Cuda not available. The device being used is now 'cpu'.")
             self.device = torch.device("cpu")
 
-        self.model_base = torchvision.models.vit_b_32(weights=torchvision.models.ViT_B_32_Weights.DEFAULT)
-
+        self.model_base = torchvision.models.vit_b_16(weights=torchvision.models.ViT_B_16_Weights.DEFAULT)
+        self.model_base.heads = nn.Linear(in_features=768, out_features=4)
         self.model_base.to(self.device)
 
     def forward(self, x):

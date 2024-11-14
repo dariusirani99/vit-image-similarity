@@ -1,7 +1,6 @@
 from sklearn.model_selection import train_test_split
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-from srcs.model_architecture import PreTrainedViT
+from torch.utils.data import DataLoader, Subset
 import os
 import yaml
 import torch
@@ -116,13 +115,25 @@ def plot_confusion_matrix(
     plt.close()
 
 
-def prepare_datasets(transform: torchvision.transforms, batch_size: int):
+def prepare_datasets(transform: torchvision.transforms, batch_size: int,
+                     subset_percent: float = 1.0):
     # Load the Images of mechanical parts dataset
     image_folder = "training/data/"
     data = ImageFolder(root=image_folder, transform=transform)
     train_data, test_data = train_test_split(data, train_size=.75)
-    train_loader = DataLoader(train_data, shuffle=True)
-    test_loader = DataLoader(test_data, shuffle=False)
+    if subset_percent < 1.0:
+        train_subset_size = int(len(train_data) * subset_percent)
+        test_subset_size = int(len(test_data) * subset_percent)
+
+        # Randomly sample subset of indices
+        train_indices = np.random.choice(len(train_data), train_subset_size, replace=False)
+        test_indices = np.random.choice(len(test_data), test_subset_size, replace=False)
+
+        # Create subsets using the sampled indices
+        train_data = Subset(train_data, train_indices)
+        test_data = Subset(test_data, test_indices)
+    train_loader = DataLoader(train_data, shuffle=True, batch_size=batch_size)
+    test_loader = DataLoader(test_data, shuffle=False, batch_size=batch_size)
     return train_loader, test_loader
 
 
@@ -178,10 +189,11 @@ def train_model():
         ]
     )
 
-    train_loader, test_loader = prepare_datasets(transform=transform_composed, batch_size=batch_size)
-
+    train_loader, test_loader = prepare_datasets(transform=transform_composed, batch_size=batch_size,
+                                                 subset_percent=.4)
     # Setting seeds for reproducibility
     set_seeds(seeds)
+
     # getting device
     if config["use_cuda"] or torch.cuda.is_available():
         device = torch.device("cuda")
@@ -189,15 +201,16 @@ def train_model():
         device = torch.device("cpu")
 
     # loading model and making the parameters trainable
-    model = PreTrainedViT(train_config=config)
-    model.model_base.heads = nn.Sequential(
-        nn.Linear(in_features=768, out_features=4),
-    )
-    for parameter in model.model_base.parameters():
-        parameter.requires_grad = True
+    model = torchvision.models.vit_b_16(weights=torchvision.models.ViT_B_16_Weights.DEFAULT)
 
+    for parameter in model.parameters():
+        parameter.requires_grad = False
+
+    model.heads = nn.Linear(in_features=768, out_features=4)
+
+    model = model.to(device)
     # defining optimizer and loss
-    optimizer = torch.optim.Adam(params=model.model_base.parameters(),
+    optimizer = torch.optim.Adam(params=model.parameters(),
                                  lr=learning_rate)
     loss_fn = torch.nn.CrossEntropyLoss()
 
@@ -292,7 +305,7 @@ def train_model():
     # Saving Model .pth weights file
     model = model.to(torch.device('cpu'))
     print("[INFO] Saving model pt file to weights path...")
-    torch.save(model, f"vit-similarity-model/model-file/{model_name}.pth")
+    torch.save(model.state_dict(), f"model-file/{model_name}.pth")
 
 if __name__ == "__main__":
     train_model()
