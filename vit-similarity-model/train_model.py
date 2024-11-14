@@ -142,17 +142,6 @@ def load_config(config_name: str):
         return yaml.safe_load(file)
 
 
-def load_model():
-    """
-    Loading the model with the resnet18 base model.
-
-    Loading in the checkpoint_path weights file.
-    """
-    model = PreTrainedViT()
-
-    return model
-
-
 def set_seeds(seed: int = 689):
     """Sets random sets for torch operations.
 
@@ -210,7 +199,7 @@ def train_model():
         device = torch.device("cpu")
 
     # loading model and making the parameters trainable
-    model = load_model()
+    model = PreTrainedViT(train=True)
     for parameter in model.parameters():
         parameter.requires_grad = False
 

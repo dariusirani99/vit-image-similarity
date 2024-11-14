@@ -202,11 +202,12 @@ class CustomViTModel(nn.Module):
 
 class PreTrainedViT(nn.Module):
     def __init__(self,
-                 ):
+                 train: bool =False):
         super().__init__()
-
-        self.config = self.load_config("config.yml")
-
+        if train:
+            self.config = self.load_config("training/config.yml")
+        else:
+            self.config = self.load_config("config.yml")
         # Loading Device
         if self.config["use_cuda"]:
             print(
