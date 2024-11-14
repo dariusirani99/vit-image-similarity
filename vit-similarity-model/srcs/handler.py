@@ -35,7 +35,6 @@ from torchvision import transforms
 from ts.torch_handler.base_handler import BaseHandler
 import base64
 import torch.nn.functional as F
-from torch import nn
 import torchinfo
 
 

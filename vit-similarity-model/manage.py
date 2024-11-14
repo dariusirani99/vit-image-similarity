@@ -88,7 +88,7 @@ def create_mar_archive() -> None:
         "--extra-files",
         "serve/dependencies/,"
         "config/config.yaml,"
-        "srcs/model_architecture.py"
+        "srcs/model_architecture.py",
         "--force",
     ]
 

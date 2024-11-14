@@ -24,8 +24,13 @@ To generate the mar file, follow these steps:
 
 1. **Train model using steps above**
 
+2. **Download the required dependencies to prevent version mismatches**
+   - Use the following command to generate the mar file in a CMD window:
+     ```
+     python download_dependencies.py
+     ```
 
-2. **Run the manage.py command**
+3. **Run the manage.py command**
 
    - Use the following command to generate the mar file in a CMD window:
      ```
