@@ -35,7 +35,7 @@ from torchvision import transforms
 from ts.torch_handler.base_handler import BaseHandler
 import base64
 import torch.nn.functional as F
-import torchinfo
+from torch import nn
 
 
 class CustomHandler(BaseHandler):
@@ -86,7 +86,7 @@ class CustomHandler(BaseHandler):
         """
         model = PreTrainedViT()
         model.model_base.load_state_dict(state_dict=torch.load(self.config["model"]["model_path"]))
-        print(f"MODEL SUMMARY:\n{torchinfo.summary(model=self.model.model_base)}")
+        model.model_base.heads = nn.Linear(in_features=768, out_features=512)
         return model
 
     def preprocess_one_image(self, req):
