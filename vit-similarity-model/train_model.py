@@ -1,4 +1,3 @@
-from torchinfo import summary
 from torchvision.datasets import CIFAR100
 import torchvision.transforms as transforms
 from srcs.model_architecture import PreTrainedViT
@@ -199,9 +198,9 @@ def train_model():
         device = torch.device("cpu")
 
     # loading model and making the parameters trainable
-    model = PreTrainedViT(train=True)
+    model = PreTrainedViT(train_config=config)
     for parameter in model.parameters():
-        parameter.requires_grad = False
+        parameter.requires_grad = True
 
     # defining optimizer and loss
     optimizer = torch.optim.Adam(params=model.parameters(),

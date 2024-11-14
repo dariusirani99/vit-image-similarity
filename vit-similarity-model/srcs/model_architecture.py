@@ -202,10 +202,10 @@ class CustomViTModel(nn.Module):
 
 class PreTrainedViT(nn.Module):
     def __init__(self,
-                 train: bool =False):
+                 train_config=None):
         super().__init__()
-        if train:
-            self.config = self.load_config("training/config.yml")
+        if train_config:
+            self.config = train_config
         else:
             self.config = self.load_config("config.yml")
         # Loading Device
