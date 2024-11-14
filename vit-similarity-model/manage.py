@@ -78,7 +78,7 @@ def create_mar_archive() -> None:
         "--version",
         model_version,
         "--serialized-file",
-        "model-file/vitsimilaritymodel.pt",
+        "model-file/vitsimilaritymodel.pth",
         "--export-path",
         "output",
         "--requirements-file",
@@ -88,6 +88,7 @@ def create_mar_archive() -> None:
         "--extra-files",
         "serve/dependencies/,"
         "config/config.yaml,"
+        "srcs/model_architecture.py"
         "--force",
     ]
 

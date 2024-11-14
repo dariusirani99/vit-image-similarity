@@ -309,8 +309,7 @@ def train_model():
 
     # Saving Model .pth weights file
     print("[INFO] Saving model pt file to weights path...")
-    compiled_model = torch.jit.script(model)
-    torch.jit.save(compiled_model, f"model-file/{model_name}.pt")
+    torch.save(model, f"model-file/{model_name}.pth")
 
 if __name__ == "__main__":
     train_model()

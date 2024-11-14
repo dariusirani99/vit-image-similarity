@@ -1,4 +1,7 @@
 ---
+model:
+    model_path: vitsimilaritymodel.pth
+
 preprocessing:
     resize: 256
     mean: [0.485, 0.456, 0.406]
