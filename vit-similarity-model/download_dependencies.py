@@ -26,11 +26,8 @@
 #  POSSIBILITY OF SUCH DAMAGE.
 
 import argparse
-import logging
 import os
 import subprocess
-
-logger = logging.getLogger(__name__)
 
 
 def get_requirements() -> list:
