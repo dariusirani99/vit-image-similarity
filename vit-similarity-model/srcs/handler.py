@@ -36,6 +36,7 @@ from ts.torch_handler.base_handler import BaseHandler
 import base64
 import torch.nn.functional as F
 from torch import nn
+import torchinfo
 
 
 class CustomHandler(BaseHandler):
@@ -93,7 +94,7 @@ class CustomHandler(BaseHandler):
         model.model_base.heads = nn.Sequential(
             nn.Linear(in_features=768, out_features=512),
         )
-
+        print(f"MODEL SUMMARY:\n{torchinfo.summary(model=self.model)}")
         return model
 
     def preprocess_one_image(self, req):

@@ -164,6 +164,7 @@ def train_model():
 
     :returns: A saved .pt file, along with loss curves, saved in appropriate directories.
     """
+    torch.cuda.empty_cache()
 
     # getting config variables
     config = load_config(config_name="train_config.yml")
@@ -178,7 +179,6 @@ def train_model():
     # getting datasets and dataloaders
     transform_composed = transforms.Compose(
         [
-            transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Normalize(
                 mean=config["preprocessing"]["mean"],
