@@ -81,12 +81,9 @@ def create_mar_archive() -> None:
         "model-file/vitsimilaritymodel.pth",
         "--export-path",
         "output",
-        "--requirements-file",
-        "serve/requirements.txt",
         "--handler",
         "srcs/handler.py",
         "--extra-files",
-        "serve/dependencies/,"
         "config/config.yml,"
         "srcs/model_architecture.py",
         "--force",
