@@ -85,7 +85,7 @@ class CustomHandler(BaseHandler):
         Loading in the checkpoint_path weights file.
         """
         model = PreTrainedViT()
-        model.model_base.load_state_dict(state_dict=torch.load(self.config["model"]["model_path"]))
+        model.model_base.load_state_dict(state_dict=torch.load(self.config["model"]["model_path"], weights_only=True))
         model.model_base.heads = nn.Linear(in_features=768, out_features=512)
         return model
 
