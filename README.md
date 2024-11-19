@@ -61,7 +61,8 @@ To generate the mar file, follow these steps:
 8. **Go into fetch_compute_images.py and take_and_upload.py and add your google cloud data where the #TODO lines of text are.**
 
 9. **Ensure your ~/.bashrc file on your VM has the following lines of code:**
-    '''
+
+'''
     export GOOGLE_APPLICATION_CREDENTIALS="path to your google application credentials json"
     export JAVA_HOME=path to your java bin
     export PATH=$JAVA_HOME/bin:$PATH
