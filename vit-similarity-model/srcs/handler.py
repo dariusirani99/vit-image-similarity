@@ -29,13 +29,11 @@ import io
 
 import torch
 import yaml
-from model_architecture import PreTrainedViT
 from PIL import Image
 from torchvision import transforms
 from ts.torch_handler.base_handler import BaseHandler
 import base64
 import torch.nn.functional as F
-from torch import nn
 
 
 class CustomHandler(BaseHandler):
@@ -79,16 +77,9 @@ class CustomHandler(BaseHandler):
         self.initialized = True
 
     def load_model(self):
-        """
-        Loading the model with the resnet18 base model.
+        """Loading the model from the .pt model file."""
+        model = torch.jit.load(self.config["model"]["model_path"])
 
-        Loading in the checkpoint_path weights file.
-        """
-        model = PreTrainedViT()
-        model.model_base.load_state_dict(state_dict=torch.load(self.config["model"]["model_path"],
-                                                               weights_only=True,
-                                                               map_location=torch.device("cpu")))
-        model.model_base.heads = nn.Linear(in_features=768, out_features=512)
         return model
 
     def preprocess_one_image(self, req):
@@ -136,3 +127,20 @@ class CustomHandler(BaseHandler):
     def postprocess(self, inference_output):
         """Returning list of features from model."""
         return [self.normalize_vector(inference_output).tolist()]
+
+    def inference(self, data, *args, **kwargs):
+        """
+        The Inference Function is used to make a prediction call on the given input request.
+        The user needs to override the inference function to customize it.
+
+        Args:
+            data (Torch Tensor): A Torch Tensor is passed to make the Inference Request.
+            The shape should match the model input shape.
+
+        Returns:
+            Torch Tensor : The Predicted Torch Tensor is returned in this function.
+        """
+        with torch.jit.optimized_execution(False):
+            with torch.no_grad():
+                results = self.model(data, *args, **kwargs)
+        return results

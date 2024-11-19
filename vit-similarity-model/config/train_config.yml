@@ -7,11 +7,11 @@ training_seeds: 689
 # default use_cuda = true
 use_cuda: true
 
-# default epochs = 10
-epochs: 10
+# default epochs = 8
+epochs: 8
 
 # gradient clipping params
-gradient_clipping: true
+gradient_clipping: false
 gradient_clipping_norm_value: 1.25
 
 # default batch_size = 4
@@ -21,7 +21,6 @@ data_batch_size: 4
 learning_rate: 0.001
 
 preprocessing:
-    mean: [0.485, 0.456, 0.406]
-    std: [0.229, 0.224, 0.225]
 
 use_cuda: true
+

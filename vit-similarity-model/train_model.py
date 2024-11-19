@@ -303,9 +303,12 @@ def train_model():
                 )
 
     # Saving Model .pth weights file
+    model.heads = nn.Linear(in_features=768, out_features=512)
     model = model.to(torch.device('cpu'))
     print("[INFO] Saving model pt file to weights path...")
-    torch.save(model.state_dict(), f"model-file/{model_name}.pth")
+    compiled_model = torch.jit.script(model)
+    torch.jit.save(compiled_model, f"model-file/{model_name}.pt")
+
 
 if __name__ == "__main__":
     train_model()

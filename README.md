@@ -2,6 +2,7 @@
 
 - This repository is for building the ViT Image Similarity Model.
 - It requires the use of Google Cloud Integration with the MAR file generated.
+- Please see the "console_scripts" for the scripts to run on the VM and on the raspberry pi.
 
 
 # Training the Models
@@ -41,11 +42,42 @@ To generate the mar file, follow these steps:
 
 # Integrating MAR file with Virtual Machine
 
-1. **Run inference using the MAR file**
+1. Transfer over the "fetch_compute_images.py" script to a VM instance.
 
-   - Ensure that the config.properties file in "supplemental/config.properties" is included in the torchserve folder when running the model.
+   - Ensure that python is running on a virtual environment inside the machine
 
-   - The MAR file should contain all files needed for the model to run inference. Use the torchserve command to start inference on any virtual machine:
-     ```
-     torchserve --start --model-store "name of model store folder with MAR file" --disable-token-auth
-     ```
+2. Pip download all requirements listed in requirements.txt file
+
+3. Place fetch_compute_images.py script in a folder known to you on your Virtual Machine.
+
+4. Place take_and_upload.py script in a folder known to you on your Raspberry Pi.
+
+5. After running the manage.py command, place the "vitsimilaritymodel-0.1.0" in a folder named "torchserve/model-store", with the "torchserve" folder being your main folder for torchserve.
+
+6. Place the "config.properties" file located in vit-similarity-model/supplemental in the torchserve folder (NOT the torchserve/model-store folder)
+
+7. Download your Google Cloud Application credentials for your entire project as a json, and place in a known path on your Virtual Machine AND your Raspberry pi.
+
+8. Go into fetch_compute_images.py and take_and_upload.py and add your google cloud data where the #TODO lines of text are.
+
+9. Ensure your ~/.bashrc file on your VM has the following lines of code:
+    '''
+    # adding paths
+    export GOOGLE_APPLICATION_CREDENTIALS="path to your google application credentials json"
+    export JAVA_HOME=path to your java bin
+    export PATH=$JAVA_HOME/bin:$PATH
+
+    # Starting Python script
+    python3 path to fetch_compute_images.py &
+
+    # Starting TorchServe
+    (
+      cd /home/ubuntu/google-cloud/torchserve &&
+      torchserve --start --model-store model-store --disable-token-auth
+    ) &
+'''
+
+10. After all these steps are taken, you should be able to run the command on your Raspberry pi, connected to a camera:
+    '''
+    python take_and_upload.py
+    '''
