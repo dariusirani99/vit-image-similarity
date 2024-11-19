@@ -42,25 +42,25 @@ To generate the mar file, follow these steps:
 
 # Integrating MAR file with Virtual Machine
 
-1. Transfer over the "fetch_compute_images.py" script to a VM instance.
+1. **Transfer over the "fetch_compute_images.py" script to a VM instance.**
 
    - Ensure that python is running on a virtual environment inside the machine
 
-2. Pip download all requirements listed in requirements.txt file
+2. **Pip download all requirements listed in requirements.txt file**
 
-3. Place fetch_compute_images.py script in a folder known to you on your Virtual Machine.
+3. **Place fetch_compute_images.py script in a folder known to you on your Virtual Machine.**
 
-4. Place take_and_upload.py script in a folder known to you on your Raspberry Pi.
+4. **Place take_and_upload.py script in a folder known to you on your Raspberry Pi.**
 
-5. After running the manage.py command, place the "vitsimilaritymodel-0.1.0" in a folder named "torchserve/model-store", with the "torchserve" folder being your main folder for torchserve.
+5. **After running the manage.py command, place the "vitsimilaritymodel-0.1.0" in a folder named "torchserve/model-store", with the "torchserve" folder being your main folder for torchserve.**
 
-6. Place the "config.properties" file located in vit-similarity-model/supplemental in the torchserve folder (NOT the torchserve/model-store folder)
+6. **Place the "config.properties" file located in vit-similarity-model/supplemental in the torchserve folder (NOT the torchserve/model-store folder)**
 
-7. Download your Google Cloud Application credentials for your entire project as a json, and place in a known path on your Virtual Machine AND your Raspberry pi.
+7. **Download your Google Cloud Application credentials for your entire project as a json, and place in a known path on your Virtual Machine AND your Raspberry pi.**
 
-8. Go into fetch_compute_images.py and take_and_upload.py and add your google cloud data where the #TODO lines of text are.
+8. **Go into fetch_compute_images.py and take_and_upload.py and add your google cloud data where the #TODO lines of text are.**
 
-9. Ensure your ~/.bashrc file on your VM has the following lines of code:
+9. **Ensure your ~/.bashrc file on your VM has the following lines of code:**
     '''
     export GOOGLE_APPLICATION_CREDENTIALS="path to your google application credentials json"
     export JAVA_HOME=path to your java bin
@@ -74,7 +74,7 @@ To generate the mar file, follow these steps:
     ) &
 '''
 
-10. After all these steps are taken, you should be able to run the command on your Raspberry pi, connected to a camera:
+10. **After all these steps are taken, you should be able to run the command on your Raspberry pi, connected to a camera:**
     '''
     python take_and_upload.py
     '''
