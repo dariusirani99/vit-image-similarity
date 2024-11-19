@@ -62,15 +62,12 @@ To generate the mar file, follow these steps:
 
 9. Ensure your ~/.bashrc file on your VM has the following lines of code:
     '''
-    # adding paths
     export GOOGLE_APPLICATION_CREDENTIALS="path to your google application credentials json"
     export JAVA_HOME=path to your java bin
     export PATH=$JAVA_HOME/bin:$PATH
 
-    # Starting Python script
     python3 path to fetch_compute_images.py &
 
-    # Starting TorchServe
     (
       cd /home/ubuntu/google-cloud/torchserve &&
       torchserve --start --model-store model-store --disable-token-auth
