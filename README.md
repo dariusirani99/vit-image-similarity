@@ -1,6 +1,8 @@
 # Copyright Notice
 
-This repository and its contents are the intellectual property of **Darius Irani**, protected under applicable copyright laws. As stated in GitHub’s [Terms of Service](https://docs.github.com/en/github/site-policy/github-terms-of-service#6-repository-contents), I retain ownership of all content I post in this repository. 
+This repository and its contents are the intellectual property of **Darius Irani**, protected under applicable copyright laws. As stated in GitHub’s [Terms of Service](https://docs.github.com/en/github/site-policy/github-terms-of-service#6-repository-contents), I retain ownership of all content I post in this repository.
+
+Anyone attempting to claim credit for this code or integration using this code without proper attribution will be considered in violation of these terms. Such violations must be reported directly to **Darius Irani** and may result in legal action.
 
 Unauthorized claiming of credit for this work is strictly prohibited and will result in legal action. However, this repository is open for use, and individuals are permitted to use it for their own purposes as long as proper credit is given, and ownership is not claimed. Any fork or reuse must include clear attribution to the original author, Darius Irani.
 
