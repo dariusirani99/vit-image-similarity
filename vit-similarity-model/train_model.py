@@ -303,6 +303,7 @@ def train_model():
                 )
 
     # Saving Model .pth weights file
+    torch.save(model.state_dict(), f"model-file/{model_name}.pth")
     model.heads = nn.Linear(in_features=768, out_features=512)
     model = model.to(torch.device('cpu'))
     print("[INFO] Saving model pt file to weights path...")

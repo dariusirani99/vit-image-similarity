@@ -35,6 +35,7 @@ To generate the MAR file, follow these steps:
 1. **Train the model using steps above**
 
 2. **Download the required dependencies to prevent version mismatches**
+
    - Use the following command to generate the MAR file in a CMD window:
      ```plaintext
      cd vit-similarity-model
@@ -48,6 +49,19 @@ To generate the MAR file, follow these steps:
      cd vit-similarity-model
      python manage.py build
      ```
+
+# Predicting a Single Image
+
+1. **Train the model using steps above**
+
+2. **Use the predict_model.py script to generate a prediction**
+
+   - Use the following command to predict the output given a single image:
+     ```plaintext
+     python predict_model.py --model-file {path to model file} --device {cuda or cpu} --input-file {path to input image}
+     ```
+3. **See the output image and json in the ./output folder**
+
 
 # Integrating MAR file with Virtual Machine
 
