@@ -67,6 +67,8 @@ To generate the MAR file, follow these steps:
 
 # Integrating MAR file with Virtual Machine
 
+- The two scripts required for integration into a Virtual Machine/Google Cloud are in the "console_scripts" folder.
+
 1. **Transfer the "fetch_compute_images.py" script to a VM instance.**
 
    - Ensure that Python is running on a virtual environment inside the machine.
